@@ -19,29 +19,21 @@
 <property name="context">@context;noquote@</property>
 <property name="title">#chat.Chat_main_page#</property>
 
-<if @room_create_p@ ne 0 and @inside_comm_p@ eq 1>
-[<a href="@chat_url@room-new">#chat.Create_a_new_room#</a>]
+<if @community_id@ gt 0 and @room_create_p@ ne 0>
+[<a href="@chat_url@room-edit">#chat.Create_a_new_room#</a>]
 </if>
 
-<if @rooms:rowcount@ eq 0>
-<p><i>#chat.There_are_no_rooms_available#</i>
+<if @rooms:rowcount@ eq 0 or @num_rooms@ eq 0>
+<p><i>#chat.There_are_no_rooms_available#</i></p>
 </if>
 <else>
   <table border=0>
-    <% set num_rooms 0 %>
     <multiple name=rooms>
-    <%
-    set can_see 0
-    if {($rooms(active_p) eq "t" && $rooms(user_p) eq "t") || ($rooms(admin_p) eq "t")} {
-      set can_see 1
-      set num_rooms [expr $num_rooms + 1]
-    }   
-    %>
-    <if @can_see@ eq 1>
+    <if @rooms.can_see_p@ eq 1>
       <tr>
-        <td valign=top>@rooms.pretty_name@</td>
+        <td valign=top><a href="@rooms.base_url@room-enter?room_id=@rooms.room_id@&client=@default_mode@">@rooms.pretty_name@</a></td>
         <td valign=top>
-            [&nbsp;<a href="@rooms.base_url@room-enter?room_id=@rooms.room_id@&client=html">HTML</a>&nbsp;|&nbsp;<a href="@rooms.base_url@room-enter?room_id=@rooms.room_id@&client=java">java</a>&nbsp;]
+            [&nbsp;<a href="@rooms.base_url@room-enter?room_id=@rooms.room_id@&client=html">#chat-portlet.html_mode#</a>&nbsp;]
         </td>
         <td valign=top>
         <if @rooms.admin_p@ eq "t">
@@ -50,21 +42,11 @@
         <if @rooms.active_p@ ne "t">
           (NO #chat.Active#)
         </if>
-        <% 
-        if {$inside_comm_p eq "1"} {
-          set desc [string range $rooms(description) 0 50] 
-        } else {
-          set desc $rooms(keyclub)
-        }
-        %>
         <td valign=top>
-            <I>@desc@</I>
+            <I>@rooms.description@</I>
         </td>
       </tr>            
     </if>
     </multiple>
-    <if @num_rooms@ eq 0>
-    <p><i>#chat.There_are_no_rooms_available#</i>
-    </if>    
   </table>
 </else>

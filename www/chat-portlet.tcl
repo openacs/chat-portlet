@@ -30,34 +30,27 @@ ad_page_contract {
 
 array set config $cf
 set list_of_package_ids $config(package_id)
-set user_id [ad_conn user_id]
 set sep_package_ids [join $list_of_package_ids ", "]
-
-if {[llength $list_of_package_ids] == 1} { 
-	set single_p "t"
-} else {
-	set single_p "f"
-}
+set chat_url "[ad_conn package_url]/chat/"
 
 set context [list]
-set shaded_p $config(shaded_p)
-set chat_url "[ad_conn package_url]/chat/"
+set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [ad_permission_p $user_id chat_room_create]
-set one_instance_p [ad_decode [llength $list_of_package_ids] 1 1 0]
-if {[exists_and_not_null community_id]} {
-    #We are in portal for one class or community
-    set inside_comm_p 1
-    db_multirow rooms rooms_list {}
-} else {
-    #We are in user portal
-    set inside_comm_p 0
-    db_multirow -extend { keyclub } rooms rooms_list_all {} {
-		set keyclub [dotlrn_community::get_community_description -community_id [dotlrn_community::get_community_id_from_url -url $base_url]]
-		if {$keyclub eq ""} {
-			set keyclub $description
-		}
-    }
-}
-ad_return_template
+set default_mode [ad_parameter DefaultClient chat "ajax"]
+set num_rooms 0
 
+if { $community_id eq 0 } {
+	set query_name "rooms_list_all"
+} else {
+	set query_name "rooms_list"
+}
+db_multirow -extend { can_see_p } rooms $query_name {} {
+	set can_see_p 0
+	if {($active_p eq "t" && $user_p eq "t") || ($admin_p eq "t")} {
+		set can_see_p 1
+		set num_rooms [expr $num_rooms + 1]
+	}   
+}
+
+ad_return_template
