@@ -20,7 +20,7 @@
 <property name="title">#chat.Chat_main_page#</property>
 
 <if @community_id@ gt 0 and @room_create_p@ ne 0>
-[<a href="@chat_url@room-edit">#chat.Create_a_new_room#</a>]
+[<a href="@chat_url@room-new">#chat.Create_a_new_room#</a>]
 </if>
 
 <if @rooms:rowcount@ eq 0 or @num_rooms@ eq 0>
@@ -37,7 +37,7 @@
         </td>
         <td valign=top>
         <if @rooms.admin_p@ eq "t">
-          [<a href="@rooms.base_url@room?room_id=@rooms.room_id@">#chat.room_admin#</a>] 
+          [<a href="@rooms.base_url@room?room_id=@rooms.room_id@">#chat.room_admin#</a>]
         </if>
         <if @rooms.active_p@ ne "t">
           (NO #chat.Active#)
@@ -45,7 +45,7 @@
         <td valign=top>
             <I>@rooms.description@</I>
         </td>
-      </tr>            
+      </tr>
     </if>
     </multiple>
   </table>
