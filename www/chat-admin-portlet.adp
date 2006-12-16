@@ -18,5 +18,5 @@
 
 <ul>
   <li><a href="@url@" title="#chat-portlet.Rooms_admin#">#chat-portlet.Rooms_admin#</a></li>
-  <li><a href="@url@room-edit" title="#chat-portlet.Add_a_Chat_Item#">#chat-portlet.Add_a_Chat_Item#</a></li>
+  <li><a href="@url@room-new" title="#chat-portlet.Add_a_Chat_Item#">#chat-portlet.Add_a_Chat_Item#</a></li>
 </ul>

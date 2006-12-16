@@ -20,7 +20,7 @@
 <property name="title">#chat.Chat_main_page#</property>
 
 <if @community_id@ gt 0 and @room_create_p@ ne 0>
-[<a href="@chat_url@room-edit" title="#chat.Create_a_new_room#">#chat.Create_a_new_room#</a>]
+[<a href="@chat_url@room-new" title="#chat.Create_a_new_room#">#chat.Create_a_new_room#</a>]
 </if>
 
 <if @rooms:rowcount@ eq 0 or @num_rooms@ eq 0>
