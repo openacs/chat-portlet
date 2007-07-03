@@ -45,15 +45,12 @@ if { $community_id eq 0 } {
 } else {
 	set query_name "rooms_list"
 }
-db_multirow -extend { can_see_p room_url html_room_url admin_url} rooms $query_name {} {
+db_multirow -extend { can_see_p } rooms $query_name {} {
 	set can_see_p 0
 	if {($active_p eq "t" && $user_p eq "t") || ($admin_p eq "t")} {
 		set can_see_p 1
 		set num_rooms [expr $num_rooms + 1]
 	}   
-    set room_url [export_vars -base ${base_url}/room-enter {{client $default_mode} room_id}]
-    set html_room_url [export_vars -base ${base_url}/room-enter {{client html} room_id}]
-    set admin_url [export_vars -base ${base_url}/room {room_id}]
 }
 
 ad_return_template
