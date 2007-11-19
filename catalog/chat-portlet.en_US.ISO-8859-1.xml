@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="chat-portlet" package_version="2.2.0b2" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="chat-portlet" package_version="2.2.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="Add_a_Chat_Item">Add a chat room</msg>
-  <msg key="admin">Admin</msg>
   <msg key="admin_pretty_name">Chat administration</msg>
-  <msg key="close_room">Closed</msg>
-  <msg key="community">Community</msg>
-  <msg key="community_class">Community/Class</msg>
   <msg key="html_mode">HTML mode</msg>
   <msg key="Manage_Chat">Manage chat</msg>
-  <msg key="no_rss">No Syndication Available</msg>
-  <msg key="not_private_room">Not Private Room</msg>
-  <msg key="open_room">Opened</msg>
   <msg key="pretty_name">Chat</msg>
-  <msg key="private_room">Private Room</msg>
   <msg key="Rooms_admin">Rooms Administration</msg>
-  <msg key="rss">RSS</msg>
 </message_catalog>
