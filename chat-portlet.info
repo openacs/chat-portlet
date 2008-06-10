@@ -15,7 +15,7 @@
         <provides url="chat-portlet" version="2.4.0b1"/>
         <requires url="dotlrn" version="2.4.0b1"/>
         <requires url="new-portal" version="2.4.0b1"/>
-        <requires url="chat" version="5.0d6"/>
+        <requires url="chat" version="5.0d7"/>
 
     </version>
 </package>
