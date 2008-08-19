@@ -20,6 +20,7 @@
          acs_objects obj
     where rm.room_id = obj.object_id
           and obj.context_id IN ($sep_package_ids)
+          and rm.active_p = 't'
     order by rm.pretty_name
   </querytext>
 </fullquery>
@@ -39,7 +40,7 @@
                    where site_nodes.object_id = obj.context_id) as base_url
     from chat_rooms rm, 
          acs_objects obj
-    where rm.room_id = obj.object_id
+    where rm.room_id = obj.object_id and rm.active_p = 't'
     order by rm.pretty_name
   </querytext>
 </fullquery>

@@ -45,12 +45,27 @@ if { $community_id eq 0 } {
 } else {
 	set query_name "rooms_list"
 }
-db_multirow -extend { can_see_p } rooms $query_name {} {
+db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
 	set can_see_p 0
-	if {($active_p eq "t" && $user_p eq "t") || ($admin_p eq "t")} {
+	if { $user_p || $admin_p } {
 		set can_see_p 1
 		set num_rooms [expr $num_rooms + 1]
 	}   
+    set room_enter_url [export_vars -base "${base_url}room-enter" {room_id {client $default_mode}}]
 }
+
+template::list::create -name chat_rooms -multirow rooms \
+    -no_data [_ chat.There_are_no_rooms_available] \
+    -filters {can_see_p {default_value 1}} \
+    -elements {
+        pretty_name {
+            label "[_ chat.Room_name]"
+            link_url_col room_enter_url
+            link_html {title "[_ chat.Enter_rooms_pretty_name]"}
+        }
+        description {
+            label "[_ chat.Description]"
+        }
+    }
 
 ad_return_template
