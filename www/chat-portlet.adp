@@ -16,11 +16,11 @@
     #
 %>
 
-<property name="context">@context;noquote@</property>
-<property name="title">#chat.Chat_main_page#</property>
-
+<if @shaded_p@ false>
 <if @community_id@ gt 0 and @room_create_p@ ne 0>
-[<a href="@chat_url@room-edit" title="#chat.Create_a_new_room#">#chat.Create_a_new_room#</a>]
+<div style="text-align:right">
+<a href="@chat_url@room-edit" title="#chat.Create_a_new_room#" class="button">#chat.Create_a_new_room#</a>
+    </div>
 </if>
 
 <if @rooms:rowcount@ eq 0 or @num_rooms@ eq 0>
@@ -49,4 +49,8 @@
     </if>
     </multiple>
   </table>
+</else>
+</if>
+<else>
+    #new-portal.when_portlet_shaded#
 </else>

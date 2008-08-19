@@ -29,11 +29,11 @@ ad_page_contract {
 }
 
 array set config $cf
+set shaded_p $config(shaded_p)
 set list_of_package_ids $config(package_id)
 set sep_package_ids [join $list_of_package_ids ", "]
 set chat_url "[ad_conn package_url]/chat/"
 
-set context [list]
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [ad_permission_p $user_id chat_room_create]
