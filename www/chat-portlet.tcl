@@ -36,8 +36,8 @@ set chat_url "[ad_conn package_url]/chat/"
 
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
-set room_create_p [ad_permission_p $user_id chat_room_create]
-set default_mode [ad_parameter DefaultClient chat "ajax"]
+set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
+set default_mode [parameter::get -parameter DefaultClient -default "ajax"]
 set num_rooms 0
 
 if { $community_id eq 0 } {
