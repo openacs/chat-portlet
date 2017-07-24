@@ -13,8 +13,8 @@
         <vendor url="http://openacs.org">OpenACS</vendor>
 
         <provides url="chat-portlet" version="2.6.0"/>
-        <requires url="dotlrn" version="2.9.1b1"/>
-        <requires url="new-portal" version="2.9.1b1"/>
+        <requires url="dotlrn" version="2.9.1b9"/>
+        <requires url="new-portal" version="2.9.1b9"/>
         <requires url="chat" version="5.0d7"/>
 
     </version>
