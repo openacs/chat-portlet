@@ -16,7 +16,7 @@
     #
 %>
 
-<if @shaded_p@ false>
+<if @shaded_p;literal@ false>
   <listtemplate name="chat_rooms"></listtemplate>
 </if>
 <else>

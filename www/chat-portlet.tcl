@@ -49,7 +49,7 @@ db_multirow -extend { can_see_p room_enter_url room_html_url html_text } rooms $
 	set can_see_p 0
 	if { $user_p || $admin_p } {
 		set can_see_p 1
-		set num_rooms [expr $num_rooms + 1]
+		set num_rooms [expr {$num_rooms + 1}]
 	}   
     set room_enter_url [export_vars -base "${base_url}room-enter" {room_id {client $default_mode}}]
     set room_html_url [export_vars -base "${base_url}room-enter" {room_id {client html}}]

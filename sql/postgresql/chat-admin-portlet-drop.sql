@@ -20,18 +20,24 @@
 --   @creation-date 2004-10-10
 --   @version $Id: chat-admin-portlet-drop.sql,v 0.1 2004/10/10
 
-create function inline_0 ()
-returns integer as '
-declare  
+
+
+--
+-- procedure inline_0/0
+--
+CREATE OR REPLACE FUNCTION inline_0(
+
+) RETURNS integer AS $$
+DECLARE  
   ds_id portal_datasources.datasource_id%TYPE;
-begin
+BEGIN
 
   select datasource_id into ds_id
     from portal_datasources
-    where name = ''chat_admin_portlet'';
+    where name = 'chat_admin_portlet';
 
     if not found then
-        raise exception ''No datasource_id found here '',ds_id ;
+        raise exception 'No datasource_id found here ',ds_id ;
         ds_id := null;        
     end if;
 
@@ -42,7 +48,8 @@ begin
 
 return 0;
 
-end;' language 'plpgsql';
+END;
+$$ LANGUAGE plpgsql;
 
 select inline_0 ();
 
