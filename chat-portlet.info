@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     
     <version name="2.6.0" url="http://openacs.org/repository/download/apm/chat-portlet-2.6.0.apm">
-        <owner url="http://opeancs.org">OpenACS</owner>
+        <owner url="http://openacs.org">OpenACS</owner>
         <release-date>2017-08-06</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
 
