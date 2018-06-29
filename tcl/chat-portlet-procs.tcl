@@ -20,7 +20,7 @@ ad_library {
 
     @author agustin (Agustin.Lopez@uv.es)
     @creation-date 2004-10-10
-    @version $Id: chat-portlet-procs.tcl,v 0.1 2004/10/10
+    @cvs-id $Id: chat-portlet-procs.tcl,v 0.1 2004/10/10
 
 }
 
