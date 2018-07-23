@@ -41,16 +41,16 @@ set default_mode [parameter::get -parameter DefaultClient -default "ajax"]
 set num_rooms 0
 
 if { $community_id eq 0 } {
-	set query_name "rooms_list_all"
+    set query_name "rooms_list_all"
 } else {
-	set query_name "rooms_list"
+    set query_name "rooms_list"
 }
 db_multirow -extend { can_see_p room_enter_url room_html_url html_text } rooms $query_name {} {
-	set can_see_p 0
-	if { $user_p || $admin_p } {
-		set can_see_p 1
-		set num_rooms [expr {$num_rooms + 1}]
-	}   
+    set can_see_p 0
+    if { $user_p || $admin_p } {
+        set can_see_p 1
+        incr num_rooms
+    }
     set room_enter_url [export_vars -base "${base_url}room-enter" {room_id {client $default_mode}}]
     set room_html_url [export_vars -base "${base_url}room-enter" {room_id {client html}}]
     set html_text [_ chat.html_client_msg]
