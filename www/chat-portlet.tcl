@@ -37,19 +37,29 @@ set chat_url "[ad_conn package_url]/chat/"
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
-set num_rooms 0
 
 if { $community_id eq 0 } {
     set query_name "rooms_list_all"
 } else {
     set query_name "rooms_list"
 }
-db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
-    set can_see_p 0
-    if { $user_p || $admin_p } {
-        set can_see_p 1
-        incr num_rooms
-    }
+db_multirow -extend {
+    can_see_p
+    admin_p
+    user_p
+    base_url
+    room_enter_url
+} rooms $query_name {} {
+    set admin_p [permission::permission_p \
+                     -object_id $room_id \
+                     -party_id $user_id \
+                     -privilege "chat_room_admin"]
+    set user_p [permission::permission_p \
+                     -object_id $room_id \
+                     -party_id $user_id \
+                    -privilege "chat_read"]
+    set base_url [lindex [site_node::get_url_from_object_id -object_id $context_id] 0]
+    set can_see_p [expr { $user_p || $admin_p }]
     set room_enter_url [export_vars -base "${base_url}room-enter" {room_id}]
 }
 
@@ -66,5 +76,3 @@ template::list::create -name chat_rooms -multirow rooms \
             label "[_ chat.Description]"
         }
     }
-
-ad_return_template
