@@ -37,7 +37,6 @@ set chat_url "[ad_conn package_url]/chat/"
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
-set default_mode [parameter::get -parameter DefaultClient -default "ajax"]
 set num_rooms 0
 
 if { $community_id eq 0 } {
@@ -45,15 +44,13 @@ if { $community_id eq 0 } {
 } else {
     set query_name "rooms_list"
 }
-db_multirow -extend { can_see_p room_enter_url room_html_url html_text } rooms $query_name {} {
+db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
     set can_see_p 0
     if { $user_p || $admin_p } {
         set can_see_p 1
         incr num_rooms
     }
-    set room_enter_url [export_vars -base "${base_url}room-enter" {room_id {client $default_mode}}]
-    set room_html_url [export_vars -base "${base_url}room-enter" {room_id {client html}}]
-    set html_text [_ chat.html_client_msg]
+    set room_enter_url [export_vars -base "${base_url}room-enter" {room_id}]
 }
 
 template::list::create -name chat_rooms -multirow rooms \
@@ -67,12 +64,6 @@ template::list::create -name chat_rooms -multirow rooms \
         }
         description {
             label "[_ chat.Description]"
-        }
-        html_mode {
-            label "[_ chat-portlet.html_mode]"
-            link_url_col room_html_url
-            display_col html_text
-            link_html {title "[_ chat.Enter_html_pretty_name]"}
         }
     }
 
