@@ -19,7 +19,7 @@ ad_page_contract {
 
     @author agustin (Agustin.Lopez@uv.es)
     @creation-date 2004-10-10
-    @version $Id: chat-admin-portlet.tcl,v 0.1 2004/10/10
+    @cvs-id $Id: chat-admin-portlet.tcl,v 0.1 2004/10/10
 
 } -properties {
 }
