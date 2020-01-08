@@ -38,10 +38,14 @@ namespace eval chat_portlet {
 
     ad_proc -public get_pretty_name {
     } {
+        Return portlet pretty name
+    } {
         return "#chat-portlet.pretty_name#"
     }
 
     ad_proc -public link {
+    } {
+        Return portlet link
     } {
         return ""
     }

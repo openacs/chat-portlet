@@ -33,6 +33,8 @@ namespace eval chat_admin_portlet {
 
     ad_proc -public get_pretty_name {
     } {
+        Return portlet pretty name
+    } {
         return "#chat-portlet.admin_pretty_name#"
     }
 
@@ -42,6 +44,8 @@ namespace eval chat_admin_portlet {
     }
 
     ad_proc -public link {
+    } {
+        Return portlet link
     } {
         return ""
     }
