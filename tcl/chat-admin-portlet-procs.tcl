@@ -73,7 +73,7 @@ namespace eval chat_admin_portlet {
     ad_proc -public remove_self_from_page {
         {-portal_id:required}
     } {
-          Removes a chat admin PE from the given page
+        Removes a chat admin PE from the given page
     } {
         portal::remove_element \
             -portal_id $portal_id \
@@ -83,6 +83,7 @@ namespace eval chat_admin_portlet {
     ad_proc -public show {
          cf
     } {
+        Show the portlet
     } {
         portal::show_proc_helper \
             -package_key [my_package_key] \

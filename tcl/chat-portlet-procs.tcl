@@ -92,6 +92,7 @@ namespace eval chat_portlet {
     ad_proc -public show {
          cf
     } {
+        Show the portlet
     } {
         portal::show_proc_helper \
             -package_key [my_package_key] \
