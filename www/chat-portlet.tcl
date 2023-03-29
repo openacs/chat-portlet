@@ -50,7 +50,7 @@ db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
         set can_see_p 1
         incr num_rooms
     }
-    set room_enter_url [export_vars -base "${base_url}room-enter" {room_id}]
+    set room_enter_url [export_vars -base "${base_url}chat" {room_id}]
 }
 
 template::list::create -name chat_rooms -multirow rooms \
