@@ -30,6 +30,15 @@ ad_page_contract {
 
 array set config $cf
 set shaded_p $config(shaded_p)
+if {$shaded_p} {
+    #
+    # Nothing else to fetch here if the portlet is shaded. Just return
+    # the template.
+    #
+    ad_return_template
+    ad_script_abort
+}
+
 set chat_url "[ad_conn package_url]/chat/"
 
 set user_id [ad_conn user_id]
@@ -87,8 +96,6 @@ template::list::create -name chat_rooms -multirow rooms \
             label "[_ chat.Description]"
         }
     }
-
-ad_return_template
 
 # Local variables:
 #    mode: tcl
