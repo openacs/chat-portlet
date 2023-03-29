@@ -30,8 +30,6 @@ ad_page_contract {
 
 array set config $cf
 set shaded_p $config(shaded_p)
-set list_of_package_ids $config(package_id)
-set sep_package_ids [join $list_of_package_ids ", "]
 set chat_url "[ad_conn package_url]/chat/"
 
 set user_id [ad_conn user_id]
@@ -39,17 +37,40 @@ set community_id [dotlrn_community::get_community_id]
 set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
 set num_rooms 0
 
-if { $community_id eq 0 } {
-    set query_name "rooms_list_all"
+if { $community_id == 0 } {
+    #
+    # Outside of .LRN, we list all chat rooms.
+    #
+    set packages_clause ""
 } else {
-    set query_name "rooms_list"
+    #
+    # Inside .LRN, we display only chat rooms belonging to the
+    # packages supplied in the configuration.
+    #
+    set packages_clause "and obj.context_id IN ([ns_dbquotelist $config(package_id)])"
 }
-db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
+db_multirow -extend { can_see_p room_enter_url } rooms list_rooms [subst -nocommands {
+    select rm.room_id,
+           rm.pretty_name as pretty_name,
+           rm.description as description,
+           rm.active_p,
+           rm.archive_p,
+           acs_permission.permission_p(room_id, :user_id, 'chat_room_admin') as admin_p,
+           acs_permission.permission_p(room_id, :user_id, 'chat_read') as user_p,
+           obj.context_id
+    from chat_rooms rm,
+         acs_objects obj
+    where rm.room_id = obj.object_id
+          $packages_clause
+          and rm.active_p = 't'
+    order by rm.pretty_name
+}] {
     set can_see_p 0
     if { $user_p || $admin_p } {
         set can_see_p 1
         incr num_rooms
     }
+    set base_url [site_node::get_url_from_object_id -object_id $context_id]
     set room_enter_url [export_vars -base "${base_url}chat" {room_id}]
 }
 
