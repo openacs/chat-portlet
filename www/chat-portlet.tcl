@@ -40,62 +40,23 @@ if {$shaded_p} {
 }
 
 set chat_url "[ad_conn package_url]/chat/"
-
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
-set num_rooms 0
 
-if { $community_id == 0 } {
-    #
-    # Outside of .LRN, we list all chat rooms.
-    #
-    set packages_clause ""
-} else {
-    #
-    # Inside .LRN, we display only chat rooms belonging to the
-    # packages supplied in the configuration.
-    #
-    set packages_clause "and obj.context_id IN ([ns_dbquotelist $config(package_id)])"
-}
-db_multirow -extend { can_see_p room_enter_url } rooms list_rooms [subst -nocommands {
-    select rm.room_id,
-           rm.pretty_name as pretty_name,
-           rm.description as description,
-           rm.active_p,
-           rm.archive_p,
-           acs_permission.permission_p(room_id, :user_id, 'chat_room_admin') as admin_p,
-           acs_permission.permission_p(room_id, :user_id, 'chat_read') as user_p,
-           obj.context_id
-    from chat_rooms rm,
-         acs_objects obj
-    where rm.room_id = obj.object_id
-          $packages_clause
-          and rm.active_p = 't'
-    order by rm.pretty_name
-}] {
-    set can_see_p 0
-    if { $user_p || $admin_p } {
-        set can_see_p 1
-        incr num_rooms
-    }
+db_multirow -extend {
+    base_url
+    room_enter_url
+    active_users
+    last_activity
+} rooms rooms_list {} {
     set base_url [site_node::get_url_from_object_id -object_id $context_id]
     set room_enter_url [export_vars -base "${base_url}chat" {room_id}]
+    set room [::chat::Chat create new -chat_id $room_id]
+    set active_users [$room nr_active_users]
+    set last_activity [$room last_activity]
+    $room destroy
 }
-
-template::list::create -name chat_rooms -multirow rooms \
-    -no_data [_ chat.There_are_no_rooms_available] \
-    -filters {can_see_p {default_value 1}} \
-    -elements {
-        pretty_name {
-            label "[_ chat.Room_name]"
-            link_url_col room_enter_url
-            link_html {title "[_ chat.Enter_rooms_pretty_name]"}
-        }
-        description {
-            label "[_ chat.Description]"
-        }
-    }
 
 # Local variables:
 #    mode: tcl
