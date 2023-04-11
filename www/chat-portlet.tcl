@@ -36,7 +36,7 @@ if {$shaded_p} {
     # the template.
     #
     ad_return_template
-    ad_script_abort
+    return
 }
 
 set chat_url "[ad_conn package_url]/chat/"
