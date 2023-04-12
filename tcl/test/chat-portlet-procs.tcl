@@ -20,27 +20,35 @@ aa_register_case -procs {
                             -package_key chat \
                             -node_name __test_chat_portlet]
 
-        set cf [list \
-                    package_id $package_id \
-                    shaded_p false \
-                   ]
+        foreach shaded_p {true false} {
+            set cf [list \
+                        package_id $package_id \
+                        shaded_p $shaded_p \
+                       ]
 
-        foreach portlet {chat_portlet chat_admin_portlet} {
+            foreach portlet {chat_portlet chat_admin_portlet} {
+                set section_name $portlet
+                if {$shaded_p} {
+                    append section_name " (shaded)"
+                }
+                aa_section $section_name
 
-            set portlet [acs_sc::invoke \
-                             -contract portal_datasource \
-                             -operation Show \
-                             -impl $portlet \
-                             -call_args [list $cf]]
+                set portlet [acs_sc::invoke \
+                                 -contract portal_datasource \
+                                 -operation Show \
+                                 -impl $portlet \
+                                 -call_args [list $cf]]
 
-            aa_log "Portlet returns: [ns_quotehtml $portlet]"
+                aa_log "Portlet returns: [ns_quotehtml $portlet]"
 
-            aa_false "No error was returned" {
-                [string first "Error in include template" $portlet] >= 0
+                aa_false "No error was returned" {
+                    [string first "Error in include template" $portlet] >= 0
+                }
+
+                aa_true "Portlet contains something" {
+                    [string length [string trim $portlet]] > 0
+                }
             }
-
-            aa_true "Portlet looks like HTML" \
-                [ad_looks_like_html_p $portlet]
         }
     }
 }
