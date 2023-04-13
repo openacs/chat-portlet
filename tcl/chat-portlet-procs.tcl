@@ -56,7 +56,7 @@ namespace eval chat_portlet {
         {-package_id:required}
         {-extra_params ""}
         {-force_region ""}
-        {-param_action:required}
+        {-param_action "overwrite"}
     } {
         add the portlet element to the given portal
     } {
