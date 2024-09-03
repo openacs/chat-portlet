@@ -38,10 +38,14 @@ namespace eval chat_portlet {
 
     ad_proc -public get_pretty_name {
     } {
+        Return portlet pretty name
+    } {
         return "#chat-portlet.pretty_name#"
     }
 
     ad_proc -public link {
+    } {
+        Return portlet link
     } {
         return ""
     }
@@ -52,7 +56,7 @@ namespace eval chat_portlet {
         {-package_id:required}
         {-extra_params ""}
         {-force_region ""}
-        {-param_action:required}
+        {-param_action "overwrite"}
     } {
         add the portlet element to the given portal
     } {
@@ -88,6 +92,7 @@ namespace eval chat_portlet {
     ad_proc -public show {
          cf
     } {
+        Show the portlet
     } {
         portal::show_proc_helper \
             -package_key [my_package_key] \
@@ -96,3 +101,9 @@ namespace eval chat_portlet {
     }
 
 }
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:

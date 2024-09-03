@@ -30,41 +30,36 @@ ad_page_contract {
 
 array set config $cf
 set shaded_p $config(shaded_p)
-set list_of_package_ids $config(package_id)
-set sep_package_ids [join $list_of_package_ids ", "]
-set chat_url "[ad_conn package_url]/chat/"
+if {$shaded_p} {
+    #
+    # Nothing else to fetch here if the portlet is shaded. Just return
+    # the template.
+    #
+    ad_return_template
+    return
+}
 
+set chat_url "[ad_conn package_url]/chat/"
 set user_id [ad_conn user_id]
 set community_id [dotlrn_community::get_community_id]
 set room_create_p [permission::permission_p -object_id $user_id -privilege chat_room_create]
-set num_rooms 0
 
-if { $community_id eq 0 } {
-    set query_name "rooms_list_all"
-} else {
-    set query_name "rooms_list"
+db_multirow -extend {
+    base_url
+    room_enter_url
+    active_users
+    last_activity
+} rooms rooms_list {} {
+    set base_url [site_node::get_url_from_object_id -object_id $context_id]
+    set room_enter_url [export_vars -base "${base_url}chat" {room_id}]
+    set room [::chat::Chat create new -chat_id $room_id]
+    set active_users [$room nr_active_users]
+    set last_activity [$room last_activity]
+    $room destroy
 }
-db_multirow -extend { can_see_p room_enter_url } rooms $query_name {} {
-    set can_see_p 0
-    if { $user_p || $admin_p } {
-        set can_see_p 1
-        incr num_rooms
-    }
-    set room_enter_url [export_vars -base "${base_url}room-enter" {room_id}]
-}
 
-template::list::create -name chat_rooms -multirow rooms \
-    -no_data [_ chat.There_are_no_rooms_available] \
-    -filters {can_see_p {default_value 1}} \
-    -elements {
-        pretty_name {
-            label "[_ chat.Room_name]"
-            link_url_col room_enter_url
-            link_html {title "[_ chat.Enter_rooms_pretty_name]"}
-        }
-        description {
-            label "[_ chat.Description]"
-        }
-    }
-
-ad_return_template
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:
